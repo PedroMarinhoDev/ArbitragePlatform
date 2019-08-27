@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+</head>
+
+<body>
+
+    <div id="info"></div>
+
+    <script>
+
+        let output
+        getPrice()
+        test()
+
+        function getPrice() {
+
+            fetch("https://www.mercadobitcoin.net/api/BTC/ticker/")
+                .then(res => res.json())
+                .then(data => {
+                    passData(data)
+                });
+        }
+        function passData(res) {
+            output = res;
+            output = `<li> Price: R$ ${output.ticker.last}</li>`;
+            document.getElementById("info").innerHTML = output;
+        }
+
+
+
+
+        const BTC_Price_Element = "BTC_MercadoBitcoin_Info";
+        let USD_BRL,
+            BTC_MER_BRL_Price,
+            BTC_MER_USD_Price,
+            BTC_BIN_USDT_Price,
+            BTC_BIN_BRL_Price;
+
+        const API_URLs = {
+            BRL: {
+                MercadoBitcoin: {
+                    BTC_MercadoBitcoin: "https://www.mercadobitcoin.net/api/BTC/ticker/",
+                    LTC_MercadoBitcoin: "https://www.mercadobitcoin.net/api/LTC/ticker/"
+                }
+            },
+            USDT: {
+                BTC_Binance: "https://api.binance.com/api/v1/ticker/price?symbol=BTCUSDT"
+            },
+            exchangeRates: {
+                USD_BRL:
+                    "https://free.currconv.com/api/v7/convert?q=USD_brl&compact=ultra&apiKey=b41d6d3a85b0730d9299"
+            }
+        };
+
+        window.onload = function what() {
+            getPrice();
+        };
+
+        function getPrice() {
+            let output;
+            fetch("https://www.mercadobitcoin.net/api/BTC/ticker/")
+                .then(res => res.json())
+                .then(data => {
+                    output = `<li> Price: R$ ${data.ticker.last}</li>`;
+                    console.log(data.ticker.last);
+                    document.getElementById("BTC_Info").innerHTML = output;
+                });
+        }
+
+        function execute() {
+            getData_USD_BRL();
+        }
+
+        function getData_USD_BRL() {
+            $.getJSON(API_URLs.exchangeRates.USD_BRL, function (API_Data) {
+                assignData_USD_BRL(API_Data);
+            });
+        }
+        function assignData_USD_BRL(data) {
+            USD_BRL = data.USD_BRL;
+            console.log(USD_BRL);
+        }
+
+        function getData_BTC_MER() {
+            $.getJSON(API_URLs.BRL.MercadoBitcoin.BTC_MercadoBitcoin, function (API_Data) {
+                assignData_BTC_MER(API_Data);
+            });
+        }
+        function assignData_BTC_MER(data) {
+            BTC_MER_BRL_Price = data.ticker.last;
+            console.log(BTC_MER_BRL_Price);
+
+            addInfo(BTC_MER_BRL_Price);
+        }
+
+        function getData_BTC_BIN() {
+            $.getJSON(API_URLs.USDT.BTC_Binance, function (API_Data) {
+                assignData_BTC_BIN(API_Data);
+            });
+        }
+        function assignData_BTC_BIN(data) {
+            BTC_BIN_USDT_Price = data.price;
+            console.log(BTC_BIN_USDT_Price);
+        }
+
+        function addInfo(assigned_Data) {
+            document.getElementById(BTC_Price_Element).innerHTML =
+                "R$ " + parseFloat(BTC_MER_BRL_Price / USD_BRL).toFixed(2);
+
+            convertCurrency();
+        }
+
+        function convertCurrency() {
+            BTC_MER_USD_Price = BTC_MER_BRL_Price / USD_BRL;
+            BTC_BIN_BRL_Price = BTC_BIN_USDT_Price * USD_BRL;
+        }
+
+
+
+
+    </script>
+
+</body>
+
+</html>
