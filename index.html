@@ -14,8 +14,35 @@
 <body>
 
     <div id="BTC_Info">
-        <p id="BTC_MercadoBitcoin_Info"></p>
+        <p id="exRate"></p>
+        <p></p>
+        <p id="BTCUSD_Mer"></p>
+        <p></p>
+        <p id="arbBTC_Bin_Mer"></p>
     </div>
+
+    <table style="width:100%;text-align:center">
+
+        <tr>
+            <th>Exchange</th>
+            <th>Price</th>
+            <th>Difference</th>
+            <th>Arbitrage Rate</th>
+        </tr>
+        <tr>
+            <td>Mercado Bitcoin</td>
+            <td id="BTCBRL_Mer">2000</td>
+            <td id="MERBIN_Diff" rowspan="2">20</td>
+            <td id="MERBIN_Perc" rowspan="2">x%</td>
+        </tr>
+        <tr>
+            <td>Binance</td>
+            <td id="BTCUSDT_Bin">2000</td>
+
+
+        </tr>
+
+    </table>
 
 </body>
 
